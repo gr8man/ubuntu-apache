@@ -1,0 +1,64 @@
+# Używamy Ubuntu 22.04 LTS jako obrazu bazowego
+FROM ubuntu:22.04
+
+# Ustawiamy zmienną środowiskową dla nieinteraktywnej instalacji APT
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 1. Aktualizujemy listę pakietów i instalujemy Apache2 oraz PHP (domyślne dla Ubuntu 22.04)
+#    Instalujemy metapakiety PHP, które wskażą na wersję 8.1 w Ubuntu 22.04.
+#    Dodajemy również wszystkie biblioteki potrzebne dla Imagick i HEIF.
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        apache2 \
+        php \
+        libapache2-mod-php \
+        php-mysql \
+        php-cli \
+        php-common \
+        php-json \
+        php-opcache \
+        php-readline \
+        php-xml \
+        php-mbstring \
+        php-zip \
+        php-bcmath \
+        php-bz2 \
+        php-gd \
+        php-imap \
+        php-ldap \
+        php-soap \
+        php-imagick \
+        # Pakiety dla Imagick i HEIF
+        libmagickwand-dev \
+        imagemagick \
+        ghostscript \
+        libheif-dev \
+        libheif-examples \
+        liblcms2-utils \
+		liblcms2-dev \
+
+    && apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+
+COPY policy.xml /etc/ImageMagick-6/policy.xml
+
+# 2. Konfiguracja Apache
+# Włączamy mod_rewrite (często potrzebne dla aplikacji PHP, np. frameworków)
+RUN a2enmod rewrite
+
+# Ustawiamy DocumentRoot na /var/www/html (standardowa ścieżka dla Apache w Ubuntu)
+# i zezwalamy na pliki .htaccess w tym katalogu.
+RUN sed -i 's/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html/' /etc/apache2/sites-available/000-default.conf && \
+    sed -i '/<Directory \/var\/www\/html>/a\\tAllowOverride All' /etc/apache2/apache2.conf && \
+    # Dodatkowa modyfikacja dla sekcji /var/www/, jeśli istnieje i jest dominująca
+    sed -i 's/<Directory \/var\/www\/>/<Directory \/var\/www\/html>/g' /etc/apache2/apache2.conf
+
+# Ustawiamy ServerName, aby Apache nie wyświetlał ostrzeżeń przy starcie
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# 3. Ekspozycja portu 80
+EXPOSE 80
+
+# 4. Definiujemy komendę uruchamiającą Apache na pierwszym planie,
+#    co jest standardową praktyką dla kontenerów Docker.
+CMD ["apache2ctl", "-D", "FOREGROUND"]
