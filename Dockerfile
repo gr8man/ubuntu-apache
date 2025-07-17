@@ -28,6 +28,7 @@ RUN apt-get update && \
         php-ldap \
         php-soap \
         php-imagick \
+	php-curl \
         # Pakiety dla Imagick i HEIF
         libmagickwand-dev \
         imagemagick \
