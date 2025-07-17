@@ -50,6 +50,7 @@ RUN a2enmod rewrite \
     && echo '    Options Indexes FollowSymLinks' >> /etc/apache2/apache2.conf \
     && echo '    AllowOverride All' >> /etc/apache2/apache2.conf \
     && echo '    Require all granted' >> /etc/apache2/apache2.conf \
+    && echo '</Directory>' >> /etc/apache2/apache2.conf \
     && sed -i 's|DocumentRoot .*|DocumentRoot /var/www/html|g' /etc/apache2/sites-available/000-default.conf
 # Ustawiamy ServerName, aby Apache nie wyświetlał ostrzeżeń przy starcie
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
