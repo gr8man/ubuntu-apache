@@ -16,6 +16,8 @@ RUN apt-get update && \
         php-mysql \
         php-cli \
         php-common \
+	php-memcached \
+ 	php-memcache \
         php-json \
         php-opcache \
         php-readline \
