@@ -19,6 +19,7 @@ RUN apt-get update && \
         php-opcache \
         php-readline \
         php-xml \
+	php-mcrypt \
         php-mbstring \
         php-zip \
         php-bcmath \
@@ -29,6 +30,8 @@ RUN apt-get update && \
         php-soap \
         php-imagick \
 	php-curl \
+ 	php-lz4 \
+  	php-pcov \
         # Pakiety dla Imagick i HEIF
         libmagickwand-dev \
         imagemagick \
