@@ -9,6 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 #    Dodajemy również wszystkie biblioteki potrzebne dla Imagick i HEIF.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+    	ca-certificates \
         apache2 \
         php \
         libapache2-mod-php \
@@ -38,7 +39,7 @@ RUN apt-get update && \
         libheif-dev \
         libheif-examples \
         liblcms2-utils \
-		liblcms2-dev \
+	liblcms2-dev \
 
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
