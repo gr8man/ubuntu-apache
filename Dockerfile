@@ -44,13 +44,13 @@ COPY policy.xml /etc/ImageMagick-6/policy.xml
 
 # 2. Konfiguracja Apache
 # Włączamy mod_rewrite (często potrzebne dla aplikacji PHP, np. frameworków)
-RUN a2enmod rewrite
-
-# Ustawiamy DocumentRoot na /var/www/html (standardowa ścieżka dla Apache w Ubuntu)
-# i zezwalamy na pliki .htaccess w tym katalogu.
-RUN a2enmod rewrite && \
-    sed -i '/<Directory \/var\/www\/html>/,/<\/Directory>/c\<Directory /var/www/html>\n    Options Indexes FollowSymLinks\n    AllowOverride All\n    Require all granted\n</Directory>' /etc/apache2/apache2.conf
-
+RUN a2enmod rewrite \
+    && sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/d' /etc/apache2/apache2.conf \
+    && echo '<Directory /var/www/html>' >> /etc/apache2/apache2.conf \
+    && echo '    Options Indexes FollowSymLinks' >> /etc/apache2/apache2.conf \
+    && echo '    AllowOverride All' >> /etc/apache2/apache2.conf \
+    && echo '    Require all granted' >> /etc/apache2/apache2.conf \
+    && sed -i 's|DocumentRoot .*|DocumentRoot /var/www/html|g' /etc/apache2/sites-available/000-default.conf
 # Ustawiamy ServerName, aby Apache nie wyświetlał ostrzeżeń przy starcie
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
