@@ -59,10 +59,10 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 # Przekierowanie logów Apache i PHP do stdout/stderr
 RUN ln -sf /dev/stdout /var/log/apache2/access.log && \
     ln -sf /dev/stderr /var/log/apache2/error.log && \
-    echo "log_errors = On" >> /etc/php/*/apache2/php.ini && \
-    echo "error_log = /dev/stderr" >> /etc/php/*/apache2/php.ini && \
-    echo "log_errors = On" >> /etc/php/*/cli/php.ini && \
-    echo "error_log = /dev/stderr" >> /etc/php/*/cli/php.ini
+    echo "log_errors = On" >> /etc/php/8.1/apache2/php.ini && \
+    echo "error_log = /dev/stderr" >> /etc/php/8.1/apache2/php.ini && \
+    echo "log_errors = On" >> /etc/php/8.1/cli/php.ini && \
+    echo "error_log = /dev/stderr" >> /etc/php/8.1/cli/php.ini
 
 # 3. Ekspozycja portu 80
 EXPOSE 80
