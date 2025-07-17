@@ -22,7 +22,6 @@ RUN apt-get update && \
         php-opcache \
         php-readline \
         php-xml \
-	php-mcrypt \
         php-mbstring \
         php-zip \
         php-bcmath \
