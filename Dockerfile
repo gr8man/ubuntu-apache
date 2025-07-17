@@ -48,10 +48,8 @@ RUN a2enmod rewrite
 
 # Ustawiamy DocumentRoot na /var/www/html (standardowa ścieżka dla Apache w Ubuntu)
 # i zezwalamy na pliki .htaccess w tym katalogu.
-RUN sed -i 's/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www\/html/' /etc/apache2/sites-available/000-default.conf && \
-    sed -i '/<Directory \/var\/www\/html>/a\\tAllowOverride All' /etc/apache2/apache2.conf && \
-    # Dodatkowa modyfikacja dla sekcji /var/www/, jeśli istnieje i jest dominująca
-    sed -i 's/<Directory \/var\/www\/>/<Directory \/var\/www\/html>/g' /etc/apache2/apache2.conf
+RUN a2enmod rewrite && \
+    sed -i '/<Directory \/var\/www\/html>/,/<\/Directory>/c\<Directory /var/www/html>\n    Options Indexes FollowSymLinks\n    AllowOverride All\n    Require all granted\n</Directory>' /etc/apache2/apache2.conf
 
 # Ustawiamy ServerName, aby Apache nie wyświetlał ostrzeżeń przy starcie
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
