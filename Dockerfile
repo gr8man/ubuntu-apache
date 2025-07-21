@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # 1. Aktualizujemy listę pakietów i instalujemy Apache2 oraz PHP (domyślne dla Ubuntu 22.04)
 #    Instalujemy metapakiety PHP, które wskażą na wersję 8.1 w Ubuntu 22.04.
 #    Dodajemy również wszystkie biblioteki potrzebne dla Imagick i HEIF.
-RUN apt-get update && \
+RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
     	ca-certificates \
         apache2 \
