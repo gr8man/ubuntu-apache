@@ -47,6 +47,16 @@ RUN apt-get update && \
 
 COPY policy.xml /etc/ImageMagick-6/policy.xml
 
+# Włączamy moduł remoteip i dodajemy konfigurację
+RUN a2enmod remoteip
+
+# Skopiuj plik z konfiguracją mod_remoteip
+COPY remoteip.conf /etc/apache2/conf-available/remoteip.conf
+
+# Włącz konfigurację
+RUN a2enconf remoteip
+
+
 # 2. Konfiguracja Apache
 # Włączamy mod_rewrite (często potrzebne dla aplikacji PHP, np. frameworków)
 RUN a2enmod rewrite \
