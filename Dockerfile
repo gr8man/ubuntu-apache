@@ -78,6 +78,9 @@ RUN ln -sf /dev/stdout /var/log/apache2/access.log && \
     echo "log_errors = On" >> /etc/php/8.1/cli/php.ini && \
     echo "error_log = /dev/stderr" >> /etc/php/8.1/cli/php.ini
 
+RUN echo "upload_max_filesize = 150M" >> /etc/php/8.1/apache2/php.ini && \
+    echo "post_max_size = 150M" >> /etc/php/8.1/apache2/php.ini
+
 # 3. Ekspozycja portu 80
 EXPOSE 80
 
